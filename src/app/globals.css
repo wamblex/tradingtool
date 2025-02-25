@@ -1,0 +1,48 @@
+* {
+  margin: 0;
+  font-family: 'Reyhan', sans-serif;
+}
+
+body {
+  background-color: #070710;
+}
+
+@font-face {
+  font-family: 'Reyhan';
+  src: url('/fonts/Reyhan-Black.ttf') format('truetype'),
+    url('/fonts/Reyhan-Black.ttf') format('truetype');
+  font-weight: 900; /* Black */
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Reyhan';
+  src: url('/fonts/Reyhan-Bold.ttf') format('truetype'),
+    url('/fonts/Reyhan-Bold.ttf') format('truetype');
+  font-weight: 700; /* Bold */
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Reyhan';
+  src: url('/fonts/Reyhan-SemiBold.ttf') format('truetype'),
+    url('/fonts/Reyhan-SemiBold.ttf') format('truetype');
+  font-weight: 600; /* Semi-Bold */
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Reyhan';
+  src: url('/fonts/Reyhan-Medium.ttf') format('truetype'),
+    url('/fonts/Reyhan-Medium.ttf') format('truetype');
+  font-weight: 500; /* Medium */
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Reyhan';
+  src: url('/fonts/Reyhan-Regular.ttf') format('truetype'),
+    url('/fonts/Reyhan-Regular.ttf') format('truetype');
+  font-weight: 400; /* Regular */
+  font-style: normal;
+}
