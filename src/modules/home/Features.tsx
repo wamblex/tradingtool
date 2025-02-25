@@ -2,7 +2,6 @@ import React from 'react';
 import styled from 'styled-components';
 import MainTitle from '../../components/typography/Titles/MainTitle';
 import MainParagraph from '../../components/typography/Paragraphes/MainParagraph';
-import Image from 'next/image';
 
 const Container = styled.div`
   width: 100%;
