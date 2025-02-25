@@ -1,7 +1,53 @@
-import React from 'react'
+'use client';
+
+import React from 'react';
+import PrimaryButton from '../buttons/PrimaryButton';
+import styled from 'styled-components';
+import Image from 'next/image';
+
+const Container = styled.div`
+  height: auto;
+  position: relative;
+`;
+
+const Content = styled.div`
+  z-index: 5;
+  display: flex;
+  flex-direction: row;
+  border-radius: 48px;
+  padding: 10px 10px 10px 32px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(251, 249, 247, 0.08);
+`;
+
+const Input = styled.input`
+  display: flex;
+  width: 272px;
+  justify-content: space-between;
+  align-items: center;
+  background: transparent;
+  outline: none;
+  border: none;
+  color: rgba(255, 255, 255);
+  font-family: Reyhan;
+  font-size: 18px;
+  font-weight: 400;
+
+  &::placeholder {
+    color: rgba(255, 255, 255, 0.72);
+  }
+`;
 
 export default function EmailNewsletter() {
   return (
-    <div>EmailNewsletter</div>
-  )
+    <Container>
+      <Content>
+        <Input placeholder='Insert your email' />
+        <PrimaryButton>
+          Subscribe
+          <Image src='/images/arrowDown.svg' alt='arrow down' width={20} height={20} />
+        </PrimaryButton>
+      </Content>
+    </Container>
+  );
 }
