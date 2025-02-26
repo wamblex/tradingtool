@@ -1,9 +1,11 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import PrimaryButton from '../buttons/PrimaryButton';
 import styled from 'styled-components';
 import Image from 'next/image';
+import Modal from '../modals/Modal';
+import WaitlistForm from './WaitlistForm';
 
 const Container = styled.div`
   height: auto;
@@ -39,15 +41,37 @@ const Input = styled.input`
 `;
 
 export default function EmailNewsletter() {
+  const [email, setEmail] = useState('');
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleOpenModal = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (email) {
+      setIsModalOpen(true);
+    }
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
   return (
     <Container>
-      <Content>
-        <Input placeholder='Insert your email' />
-        <PrimaryButton>
+      <Content as="form" onSubmit={handleOpenModal}>
+        <Input 
+          type="email"
+          placeholder='Insert your email'
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <PrimaryButton type="submit">
           Subscribe
           <Image src='/images/arrowDown.svg' alt='arrow down' width={20} height={20} />
         </PrimaryButton>
       </Content>
+      <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
+        <WaitlistForm initialEmail={email} />
+      </Modal>
     </Container>
   );
 }

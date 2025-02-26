@@ -54,13 +54,36 @@ const Input = styled.input`
   }
 `;
 
-export default function WaitlistForm() {
+const SuccessMessage = styled.div`
+  color: #4bb543;
+  text-align: center;
+  margin-top: 16px;
+`;
+
+const ErrorMessage = styled.div`
+  color: #ff3333;
+  text-align: center;
+  margin-top: 16px;
+`;
+
+interface WaitlistFormProps {
+  initialEmail?: string;
+  onSuccess?: () => void;
+}
+
+export default function WaitlistForm({
+  initialEmail = '',
+  onSuccess,
+}: WaitlistFormProps) {
   const [formData, setFormData] = useState({
     firstName: '',
     lastName: '',
-    email: '',
+    email: initialEmail,
     phone: '',
   });
+
+  const [status, setStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -70,10 +93,34 @@ export default function WaitlistForm() {
     }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle form submission here
-    console.log('Form submitted:', formData);
+    setStatus('loading');
+    setErrorMessage('');
+
+    try {
+      const response = await fetch('/api/waitlist', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to join waitlist');
+      }
+
+      setStatus('success');
+      if (onSuccess) {
+        onSuccess();
+      }
+    } catch (error) {
+      setStatus('error');
+      setErrorMessage(error instanceof Error ? error.message : 'Failed to join waitlist');
+    }
   };
 
   return (
@@ -90,6 +137,7 @@ export default function WaitlistForm() {
             placeholder='First Name'
             value={formData.firstName}
             onChange={handleChange}
+            required
           />
           <Input
             type='text'
@@ -97,6 +145,7 @@ export default function WaitlistForm() {
             placeholder='Last Name'
             value={formData.lastName}
             onChange={handleChange}
+            required
           />
         </InputRow>
 
@@ -106,6 +155,7 @@ export default function WaitlistForm() {
           placeholder='Email Address'
           value={formData.email}
           onChange={handleChange}
+          required
         />
 
         <Input
@@ -117,10 +167,24 @@ export default function WaitlistForm() {
         />
       </InputsContainer>
 
-      <PrimaryButton fontSize='16px' $padding='16px 24px' type='submit'>
-        Join the Waitlist
-        <Image src='/images/arrowDown.svg' alt='arrow down' width={20} height={20} />
+      <PrimaryButton
+        fontSize='16px'
+        $padding='16px 24px'
+        type='submit'
+        disabled={status === 'loading'}>
+        {status === 'loading' ? 'Joining...' : 'Join the Waitlist'}
+        {status !== 'loading' && (
+          <Image src='/images/arrowDown.svg' alt='arrow down' width={20} height={20} />
+        )}
       </PrimaryButton>
+
+      {status === 'success' && (
+        <SuccessMessage>
+          Successfully joined the waitlist! We willl be in touch soon.
+        </SuccessMessage>
+      )}
+
+      {status === 'error' && <ErrorMessage>{errorMessage}</ErrorMessage>}
     </Container>
   );
 }
