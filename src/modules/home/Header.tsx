@@ -1,9 +1,11 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import PrimaryButton from '../../components/buttons/PrimaryButton';
 import Image from 'next/image';
+import Modal from '../../components/modals/Modal';
+import WaitlistForm from '../../components/inputs/WaitlistForm';
 
 const ParentContainer = styled.div`
   display: flex;
@@ -21,13 +23,24 @@ const Logo = styled.img`
 `;
 
 export default function Header() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleOpenModal = () => setIsModalOpen(true);
+  const handleCloseModal = () => setIsModalOpen(false);
+
   return (
-    <ParentContainer>
-      <Logo src='/images/logo.svg' alt='logo' />
-      <PrimaryButton>
-        Get Started
-        <Image src='/images/arrowDown.svg' alt='arrow down' width={20} height={20} />
-      </PrimaryButton>
-    </ParentContainer>
+    <>
+      <ParentContainer>
+        <Logo src='/images/logo.svg' alt='logo' />
+        <PrimaryButton onClick={handleOpenModal}>
+          Get Started
+          <Image src='/images/arrowDown.svg' alt='arrow down' width={20} height={20} />
+        </PrimaryButton>
+      </ParentContainer>
+
+      <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
+        <WaitlistForm />
+      </Modal>
+    </>
   );
 }

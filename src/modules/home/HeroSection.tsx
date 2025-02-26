@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import PrimaryButton from '../../components/buttons/PrimaryButton';
 import MainTitle from '../../components/typography/Titles/MainTitle';
@@ -7,6 +7,8 @@ import Image from 'next/image';
 import HeadingCard from '../../components/cards/HeadingCard';
 import Header from './Header';
 import HeroBackground from './HeroBackground';
+import Modal from '../../components/modals/Modal';
+import WaitlistForm from '../../components/inputs/WaitlistForm';
 
 const Container = styled.div`
   width: 100%;
@@ -70,6 +72,11 @@ const CardsContainer = styled.div`
 `;
 
 export default function HeroSection() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleOpenModal = () => setIsModalOpen(true);
+  const handleCloseModal = () => setIsModalOpen(false);
+
   return (
     <Container>
       <Content>
@@ -85,7 +92,7 @@ export default function HeroSection() {
                   Get early access to a next-generation copy trading platform designed for
                   fund managers and traders who demand precision and performance.
                 </MainParagraph>
-                <PrimaryButton>
+                <PrimaryButton onClick={handleOpenModal}>
                   Join the Waitlist
                   <Image
                     src='/images/arrowDown.svg'
@@ -135,6 +142,9 @@ export default function HeroSection() {
         </ParentContainer>
       </Content>
       <HeroBackground />
+      <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
+        <WaitlistForm />
+      </Modal>
     </Container>
   );
 }

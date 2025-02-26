@@ -3,7 +3,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-interface ButtonProps {
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   background?: string;
   color?: string;
   $padding?: string;
@@ -13,10 +13,9 @@ interface ButtonProps {
   fontWeight?: string;
   spacingTop?: string;
   hoverBackground?: string;
-  children: React.ReactNode;
 }
 
-const Container = styled.div<ButtonProps>`
+const Container = styled.button<ButtonProps>`
   width: auto;
   height: auto;
   padding: ${(props) => props.$padding || '10px 16px'};
@@ -29,11 +28,11 @@ const Container = styled.div<ButtonProps>`
   cursor: pointer;
   font-size: ${(props) => props.fontSize || '16px'};
   font-weight: ${(props) => props.fontWeight || '500'};
-  transition: all 1.5s cubic-bezier(0.22, 1, 0.36, 1);
-  align-items: center;
   display: flex;
-  gap: 4px;
+  align-items: center;
   justify-content: center;
+  gap: 4px;
+  transition: all 1.5s cubic-bezier(0.22, 1, 0.36, 1);
 
   &:hover {
     background: ${(props) => props.hoverBackground || 'rgba(255, 255, 255, 0.16)'};
@@ -49,40 +48,17 @@ const Container = styled.div<ButtonProps>`
   img {
     transition: filter 1.5s cubic-bezier(0.22, 1, 0.36, 1);
   }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
 `;
 
-const PrimaryButton = React.forwardRef<HTMLDivElement, ButtonProps>(
-  function PrimaryButton(
-    {
-      children,
-      background,
-      color,
-      $padding,
-      borderRadius,
-      fontSize,
-      fontWeight,
-      border,
-      spacingTop,
-      hoverBackground,
-    }: ButtonProps,
-    ref
-  ) {
-    return (
-      <Container
-        ref={ref}
-        background={background}
-        color={color}
-        $padding={$padding}
-        border={border}
-        borderRadius={borderRadius}
-        fontSize={fontSize}
-        fontWeight={fontWeight}
-        spacingTop={spacingTop}
-        hoverBackground={hoverBackground}>
-        {children}
-      </Container>
-    );
-  }
-);
-
-export default PrimaryButton;
+export default function PrimaryButton({ children, ...props }: ButtonProps) {
+  return (
+    <Container {...props}>
+      {children}
+    </Container>
+  );
+}
